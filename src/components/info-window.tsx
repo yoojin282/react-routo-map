@@ -23,9 +23,9 @@ const InfoWindowBase: ForwardRefRenderFunction<
     content,
     position,
     disableAutoPan,
-    maxWidth,
-    minWidth,
-    pixelOffset,
+    // maxWidth,
+    // minWidth,
+    // pixelOffset,
     zIndex,
   }: InfoWindowProps,
   ref,
@@ -43,10 +43,10 @@ const InfoWindowBase: ForwardRefRenderFunction<
     infoWindow.current = new routo.maps.InfoWindow({
       content,
       disableAutoPan,
-      pixelOffset,
+      // pixelOffset: pixelOffset ? new routo.maps.Size(0, pixelOffset) : null,
       position,
-      maxWidth,
-      minWidth,
+      // maxWidth,
+      // minWidth,
       zIndex,
     });
 
@@ -65,9 +65,9 @@ const InfoWindowBase: ForwardRefRenderFunction<
     content,
     position,
     disableAutoPan,
-    maxWidth,
-    minWidth,
-    pixelOffset,
+    // maxWidth,
+    // minWidth,
+    // pixelOffset,
     zIndex,
   ]);
 

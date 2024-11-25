@@ -1,27 +1,30 @@
-import React, { useRef } from "react";
+import React, {
+  forwardRef,
+  ForwardRefRenderFunction,
+  memo,
+  useImperativeHandle,
+  useRef,
+} from "react";
 import { useMapContext } from "../context";
-import { useIsomorphicLayoutEffect } from "../hooks";
-import { LatLng } from "../types";
+import { useIsomorphicLayoutEffect, useUUIDv4 } from "../hooks";
+import { PolylineRef, PolylineProps } from "./types";
 
-interface PolylineProps {
-  path: LatLng[];
-  strokeColor?: string;
-  strokeWeight?: number;
-  strokeOpacity?: number;
-}
-
-/**
- * Set polyline into Map obejct without rendering anything in VirtualDOM
- * @returns <></>
- */
-export const Polyline = ({
-  path,
-  strokeColor = "#FF0000",
-  strokeWeight = 4,
-  strokeOpacity = 0.8,
-}: PolylineProps) => {
+const PolylineBase: ForwardRefRenderFunction<PolylineRef, PolylineProps> = (
+  {
+    path,
+    strokeColor = "#FF0000",
+    strokeWeight = 4,
+    strokeOpacity = 0.8,
+  }: PolylineProps,
+  ref,
+) => {
   const map = useMapContext();
   const polylineRef = useRef<routo.maps.Polyline | null>(null);
+  const id = useUUIDv4();
+
+  useImperativeHandle(ref, () => ({
+    getPolyline: () => ({ polyline: polylineRef.current, id }),
+  }));
 
   useIsomorphicLayoutEffect(() => {
     if (!map) return;
@@ -46,3 +49,5 @@ export const Polyline = ({
 
   return <></>;
 };
+
+export const Polyline = memo(forwardRef(PolylineBase));

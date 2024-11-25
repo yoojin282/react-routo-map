@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { InitParams, InitResult, UseRoutoMapInit } from "./types";
+import { InitParams, InitResult, Submodule, UseRoutoMapInit } from "./types";
 import { useIsomorphicLayoutEffect } from "./use-isomorphic-layout-effect";
 import { isClientSide, isFunction } from "../utils";
 
@@ -15,9 +15,10 @@ export const SCRIPT_ID = "react-routo-map";
  */
 export const useRoutoMapInit: UseRoutoMapInit = ({
   appKey,
+  submodules,
   onLoad,
   onError,
-}) => {
+}: InitParams) => {
   const [{ isLoaded, isError }, setInitResult] = useState<InitResult>({
     isLoaded: false,
     isError: false,
@@ -30,20 +31,37 @@ export const useRoutoMapInit: UseRoutoMapInit = ({
     }
 
     // Remove existing script if it exists
-    const existingScript = document.getElementById(SCRIPT_ID);
+    let existingScript = document.getElementById(SCRIPT_ID);
     if (existingScript) {
       existingScript.remove();
+    }
+    for (let i = 0; i < (submodules?.length ?? 0); i++) {
+      let subScript = submodules![i];
+      if (!subScript) {
+        continue;
+      }
+      existingScript = document.getElementById(subScript);
+      if (existingScript) {
+        existingScript.remove();
+      }
     }
 
     const initRoutoMapScript = async () => {
       const scriptInitResult = new Promise<InitResult>((resolve, reject) => {
-        const script = createRoutoMapScriptByClientId({
+        const script = createRoutoMapScriptByAppKey({
           appKey,
         });
         insertRoutoMapScriptIntoHead(script);
 
         script.addEventListener("load", function () {
           console.info("react-routo-map is initialized ");
+          let subScript = null;
+          for (let i = 0; i < (submodules?.length ?? 0); i++) {
+            subScript = createSubModule(submodules![i]);
+            if (subScript) {
+              insertRoutoMapScriptIntoHead(subScript);
+            }
+          }
           resolve({ isLoaded: true, isError: false });
         });
 
@@ -61,6 +79,22 @@ export const useRoutoMapInit: UseRoutoMapInit = ({
     initRoutoMapScript();
   }, [appKey]);
 
+  const createSubModule = (module: Submodule) => {
+    const script = document.createElement("script");
+    script.type = "text/javascript";
+    script.id = module;
+    if (module === "data") {
+      script.src = "https://api.routo.com/v2/maps/js/data.js";
+    } else if (module === "parking") {
+      script.src = "https://api.routo.com/v2/maps/js/parking.layer.js";
+    } else if (module === "custom") {
+      script.src = "https://api.routo.com/v2/maps/js/custom.layer.js";
+    } else {
+      return null;
+    }
+    return script;
+  };
+
   useIsomorphicLayoutEffect(() => {
     if (onLoad && isFunction(onLoad) && isLoaded) {
       onLoad();
@@ -73,7 +107,7 @@ export const useRoutoMapInit: UseRoutoMapInit = ({
   return { isLoaded, isError };
 };
 
-const createRoutoMapScriptByClientId = ({
+const createRoutoMapScriptByAppKey = ({
   appKey,
 }: Pick<InitParams, "appKey">) => {
   const script = document.createElement("script");

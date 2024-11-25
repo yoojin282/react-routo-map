@@ -25,9 +25,9 @@ export interface MarkerRef {
 export interface InfoWindowProps {
   content?: string | Element | Text | null;
   position: LatLng;
-  pixelOffset?: number | null;
-  maxWidth?: number | null;
-  minWidth?: number | null;
+  // pixelOffset?: number | null; 작동안하는듯
+  // maxWidth?: number | null; 작동안하는듯
+  // minWidth?: number | null; 작동안하는듯
   ariaLabel?: string | null;
   disableAutoPan?: boolean | null;
   zIndex?: number | null;
@@ -38,4 +38,15 @@ export interface InfoWindowRef {
     infoWindow: Nullable<routo.maps.InfoWindow>;
     id: string;
   };
+}
+
+export interface PolylineProps {
+  path: LatLng[];
+  strokeColor?: string;
+  strokeWeight?: number;
+  strokeOpacity?: number;
+}
+
+export interface PolylineRef {
+  getPolyline: () => { polyline: Nullable<routo.maps.Polyline>; id: string };
 }
