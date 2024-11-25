@@ -1,9 +1,10 @@
 import React, { useRef } from "react";
 import { useMapContext } from "../context";
 import { useIsomorphicLayoutEffect } from "../hooks";
+import { LatLng } from "../types";
 
 interface PolylineProps {
-  path: { latitude: number; longitude: number }[];
+  path: LatLng[];
   strokeColor?: string;
   strokeWeight?: number;
   strokeOpacity?: number;
@@ -25,9 +26,7 @@ export const Polyline = ({
   useIsomorphicLayoutEffect(() => {
     if (!map) return;
 
-    const polylinePath = path.map(
-      (point) => new routo.maps.LatLng(point.latitude, point.longitude),
-    );
+    const polylinePath = path.map((point) => new routo.maps.LatLng(point));
 
     polylineRef.current = new routo.maps.Polyline({
       map,

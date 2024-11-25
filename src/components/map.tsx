@@ -1,11 +1,12 @@
 import React, { createElement as e, useMemo, useRef, useState } from "react";
 import { useIsomorphicLayoutEffect } from "../hooks";
 import { MapContextProvider } from "../context";
+import { MapProps } from "./types";
 
 const INITIAL_LEVEL = 15;
 
 /**
- * Rendering a naver map
+ * Rendering a routo map
  *
  * This component will take className as a prop, so that you can style this component using any styling libraries.(e.g. css, styled-components, etc.)
  *
@@ -13,19 +14,29 @@ const INITIAL_LEVEL = 15;
 export const Map = ({
   as = "div",
   children,
-  center = { latitude: 37.566535, longitude: 126.977969 },
+  center = { lat: 37.566535, lng: 126.977969 },
+  boundsPath,
+  boundsPadding,
   zoom = INITIAL_LEVEL,
   className,
   style,
   ...rest
-}: any) => {
-  const { latitude, longitude } = center;
-
-  const centerRef = useRef(new routo.maps.LatLng(latitude, longitude));
+}: MapProps) => {
+  const centerRef = useRef(new routo.maps.LatLng(center.lat, center.lng));
   const ref = useRef<HTMLDivElement>(null);
   const initializing = useRef(false);
 
   const [map, setMap] = useState<routo.maps.Map | null>(null);
+
+  const bounds = useMemo(() => {
+    const bounds = new routo.maps.LatLngBounds();
+
+    boundsPath?.forEach((latlng) => {
+      bounds.extend(new routo.maps.LatLng(latlng.lat, latlng.lng));
+    });
+
+    return bounds;
+  }, [boundsPath]);
 
   useIsomorphicLayoutEffect(() => {
     if (!ref.current || initializing.current) return;
@@ -37,16 +48,15 @@ export const Map = ({
       ...rest,
     });
 
-    // const listener = map.addListener("init", () => setInit(true));
     setMap(map);
-
+    if (boundsPath) {
+      map.fitBounds(bounds, boundsPadding);
+    }
     return () => {
       if (initializing.current) {
         initializing.current = false;
         return;
       }
-      // map.removeListener(listener);
-      // map.destroy();
     };
   }, []);
 

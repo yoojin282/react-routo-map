@@ -5,15 +5,10 @@ import {
   useImperativeHandle,
   useRef,
 } from "react";
-import {
-  InfoWindowProps,
-  InfoWindowRef,
-  MarkerProps,
-  MarkerRef,
-} from "./types";
 import { useMapContext } from "../context";
-import { Nullable } from "../types";
+import { LatLng, Nullable } from "../types/types";
 import { useIsomorphicLayoutEffect, useUUIDv4 } from "../hooks";
+import { InfoWindowProps, InfoWindowRef } from "./types";
 
 /**
  * A marker component for map
@@ -24,7 +19,15 @@ const InfoWindowBase: ForwardRefRenderFunction<
   InfoWindowRef,
   InfoWindowProps
 > = (
-  { contents, position: { lat, lng }, disableAutoPan, pixelOffset },
+  {
+    content,
+    position,
+    disableAutoPan,
+    maxWidth,
+    minWidth,
+    pixelOffset,
+    zIndex,
+  }: InfoWindowProps,
   ref,
 ) => {
   const map = useMapContext();
@@ -38,14 +41,17 @@ const InfoWindowBase: ForwardRefRenderFunction<
 
   useIsomorphicLayoutEffect(() => {
     infoWindow.current = new routo.maps.InfoWindow({
-      content: contents,
+      content,
       disableAutoPan,
       pixelOffset,
+      position,
+      maxWidth,
+      minWidth,
+      zIndex,
     });
 
     infoWindow.current.open({
       map,
-      position: new routo.maps.LatLng(lat, lng),
     });
 
     return () => {
@@ -54,9 +60,18 @@ const InfoWindowBase: ForwardRefRenderFunction<
         infoWindow.current = null;
       }
     };
-  }, [map, lat, lng, disableAutoPan, pixelOffset]);
+  }, [
+    map,
+    content,
+    position,
+    disableAutoPan,
+    maxWidth,
+    minWidth,
+    pixelOffset,
+    zIndex,
+  ]);
 
   return null;
 };
 
-export const Marker = memo(forwardRef(InfoWindowBase));
+export const InfoWindow = memo(forwardRef(InfoWindowBase));

@@ -7,16 +7,11 @@ import {
 } from "react";
 import { MarkerProps, MarkerRef } from "./types";
 import { useMapContext } from "../context";
-import { Nullable } from "../types";
+import { Nullable } from "../types/types";
 import { useIsomorphicLayoutEffect, useUUIDv4 } from "../hooks";
 
-/**
- * A marker component for map
- *
- * You can customize this marker with icon prop, see more detail here {@link https://navermaps.github.io/maps.js.ncp/docs/naver.maps.Marker.html#toc37__anchor}
- */
 const MarkerBase: ForwardRefRenderFunction<MarkerRef, MarkerProps> = (
-  { position: { lat, lng }, onClick, icon, ...rest }: MarkerProps,
+  { position, onClick, icon, ...rest }: MarkerProps,
   ref,
 ) => {
   const map = useMapContext();
@@ -31,7 +26,7 @@ const MarkerBase: ForwardRefRenderFunction<MarkerRef, MarkerProps> = (
   useIsomorphicLayoutEffect(() => {
     marker.current = new routo.maps.Marker({
       map,
-      position: new routo.maps.LatLng(lat, lng),
+      position: position,
       icon: icon,
       clickable: !!onClick,
       ...rest,
@@ -50,7 +45,7 @@ const MarkerBase: ForwardRefRenderFunction<MarkerRef, MarkerProps> = (
       marker.current.setMap(null);
       marker.current = null;
     };
-  }, [lat, lng, map, onClick, rest]);
+  }, [position, map, onClick, rest]);
 
   return null;
 };

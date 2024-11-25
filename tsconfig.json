@@ -14,7 +14,8 @@
     "forceConsistentCasingInFileNames": true,
     "outDir": "./types",
     "declaration": true,
-    "jsx": "react"
+    "jsx": "react",
+    "types": ["@yoojin282/routo-map-types"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
