@@ -14,7 +14,7 @@ const INITIAL_LEVEL = 15;
 export const Map = ({
   as = "div",
   children,
-  center = { lat: 37.566535, lng: 126.977969 },
+  center = { lat: 37.507009, lng: 127.0586339 },
   boundsPath,
   boundsPadding,
   zoom = INITIAL_LEVEL,
