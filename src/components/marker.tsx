@@ -7,7 +7,7 @@ import {
 } from "react";
 import { MarkerProps, MarkerRef } from "./types";
 import { useMapContext } from "../context";
-import { Nullable } from "../types/types";
+import { Nullable } from "../types";
 import { useIsomorphicLayoutEffect, useUUIDv4 } from "../hooks";
 
 const MarkerBase: ForwardRefRenderFunction<MarkerRef, MarkerProps> = (

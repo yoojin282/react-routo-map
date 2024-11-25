@@ -1,5 +1,5 @@
 import { ElementType, ReactElement } from "react";
-import { ComponentBase, LatLng, Nullable } from "../types/types";
+import { ComponentBase, LatLng, Nullable } from "../types";
 
 export interface MapProps extends routo.maps.MapOptions, ComponentBase {
   as?: ElementType;

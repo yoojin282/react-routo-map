@@ -6,7 +6,7 @@ import {
   useRef,
 } from "react";
 import { useMapContext } from "../context";
-import { LatLng, Nullable } from "../types/types";
+import { Nullable } from "../types";
 import { useIsomorphicLayoutEffect, useUUIDv4 } from "../hooks";
 import { InfoWindowProps, InfoWindowRef } from "./types";
 
