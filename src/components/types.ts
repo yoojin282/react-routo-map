@@ -1,13 +1,10 @@
 import { ElementType, ReactElement } from "react";
-import { ComponentBase, LatLng, Nullable } from "../types";
+import { ComponentBase, LatLng, Nullable, PixelOffset } from "../types";
 
 export interface MapProps extends routo.maps.MapOptions, ComponentBase {
   as?: ElementType;
   center?: LatLng;
-  boundsPath?: LatLng[];
-  boundsPadding?:
-    | { top: number; left: number; right: number; bottom: number }
-    | number;
+  onLoad?: (map: routo.maps.Map) => void;
   children?: ReactElement;
 }
 
@@ -25,9 +22,9 @@ export interface MarkerRef {
 export interface InfoWindowProps {
   content?: string | Element | Text | null;
   position: LatLng;
-  // pixelOffset?: number | null; 작동안하는듯
-  // maxWidth?: number | null; 작동안하는듯
-  // minWidth?: number | null; 작동안하는듯
+  pixelOffset?: PixelOffset | null; // 작동안하는듯
+  maxWidth?: number | null; // 작동안하는듯
+  minWidth?: number | null; // 작동안하는듯
   ariaLabel?: string | null;
   disableAutoPan?: boolean | null;
   zIndex?: number | null;

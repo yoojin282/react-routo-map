@@ -15,9 +15,8 @@ export const Map = ({
   as = "div",
   children,
   center = { lat: 37.507009, lng: 127.0586339 },
-  boundsPath,
-  boundsPadding,
   zoom = INITIAL_LEVEL,
+  onLoad,
   className,
   style,
   ...rest
@@ -27,16 +26,6 @@ export const Map = ({
   const initializing = useRef(false);
 
   const [map, setMap] = useState<routo.maps.Map | null>(null);
-
-  const bounds = useMemo(() => {
-    const bounds = new routo.maps.LatLngBounds();
-
-    boundsPath?.forEach((latlng) => {
-      bounds.extend(new routo.maps.LatLng(latlng.lat, latlng.lng));
-    });
-
-    return bounds;
-  }, [boundsPath]);
 
   useIsomorphicLayoutEffect(() => {
     if (!ref.current || initializing.current) return;
@@ -49,12 +38,14 @@ export const Map = ({
     });
 
     setMap(map);
-    if (boundsPath) {
-      map.fitBounds(bounds, boundsPadding);
+
+    if (onLoad && initializing.current) {
+      onLoad(map);
     }
     return () => {
       if (initializing.current) {
         initializing.current = false;
+
         return;
       }
     };

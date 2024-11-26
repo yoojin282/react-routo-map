@@ -21,11 +21,12 @@ const InfoWindowBase: ForwardRefRenderFunction<
 > = (
   {
     content,
+    ariaLabel,
     position,
     disableAutoPan,
-    // maxWidth,
-    // minWidth,
-    // pixelOffset,
+    maxWidth, // 작동안함
+    minWidth, // 작동안함
+    pixelOffset, // 작동안함
     zIndex,
   }: InfoWindowProps,
   ref,
@@ -43,10 +44,13 @@ const InfoWindowBase: ForwardRefRenderFunction<
     infoWindow.current = new routo.maps.InfoWindow({
       content,
       disableAutoPan,
-      // pixelOffset: pixelOffset ? new routo.maps.Size(0, pixelOffset) : null,
+      ariaLabel,
+      pixelOffset: pixelOffset
+        ? new routo.maps.Size(pixelOffset.width, pixelOffset.height)
+        : null,
       position,
-      // maxWidth,
-      // minWidth,
+      maxWidth,
+      minWidth,
       zIndex,
     });
 
@@ -63,11 +67,12 @@ const InfoWindowBase: ForwardRefRenderFunction<
   }, [
     map,
     content,
+    ariaLabel,
     position,
     disableAutoPan,
-    // maxWidth,
-    // minWidth,
-    // pixelOffset,
+    maxWidth,
+    minWidth,
+    pixelOffset,
     zIndex,
   ]);
 
