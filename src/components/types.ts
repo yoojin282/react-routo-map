@@ -2,6 +2,7 @@ import { ElementType, ReactElement } from "react";
 import {
   ComponentBase,
   LatLng,
+  LatLngBounds,
   Nullable,
   Padding,
   PixelOffset,
@@ -43,11 +44,11 @@ export interface InfoWindowRef {
   };
 }
 
-export interface PolylineProps {
+export interface PolylineProps
+  extends Omit<routo.maps.PolygonOptions, "map" | "clickable" | "paths"> {
   path: LatLng[];
-  strokeColor?: string;
-  strokeWeight?: number;
-  strokeOpacity?: number;
+  fitBounds?: boolean | undefined;
+  fitBoundsPadding?: Padding | undefined;
 }
 
 export interface PolylineRef {
@@ -63,4 +64,26 @@ export interface PolygonProps
 
 export interface PolygonRef {
   getPolygon: () => { polygon: Nullable<routo.maps.Polygon>; id: string };
+}
+
+export interface CircleProps
+  extends Omit<routo.maps.CircleOptions, "map" | "clickable"> {
+  center: LatLng;
+  fitBounds?: boolean | undefined;
+  fitBoundsPadding?: Padding | undefined;
+}
+
+export interface CircleRef {
+  getCircle: () => { circle: Nullable<routo.maps.Circle>; id: string };
+}
+
+export interface RectangleProps
+  extends Omit<routo.maps.RectangleOptions, "map" | "clickable"> {
+  bounds: LatLngBounds;
+  fitBounds?: boolean | undefined;
+  fitBoundsPadding?: Padding | undefined;
+}
+
+export interface RectangleRef {
+  getRectangle: () => { rectangle: Nullable<routo.maps.Rectangle>; id: string };
 }

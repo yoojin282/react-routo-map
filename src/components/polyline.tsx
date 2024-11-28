@@ -10,12 +10,7 @@ import { useIsomorphicLayoutEffect, useUUIDv4 } from "../hooks";
 import { PolylineRef, PolylineProps } from "./types";
 
 const PolylineBase: ForwardRefRenderFunction<PolylineRef, PolylineProps> = (
-  {
-    path,
-    strokeColor = "#FF0000",
-    strokeWeight = 4,
-    strokeOpacity = 0.8,
-  }: PolylineProps,
+  { path, fitBounds = false, fitBoundsPadding, ...rest }: PolylineProps,
   ref,
 ) => {
   const map = useMapContext();
@@ -34,10 +29,12 @@ const PolylineBase: ForwardRefRenderFunction<PolylineRef, PolylineProps> = (
     polylineRef.current = new routo.maps.Polyline({
       map,
       path: polylinePath,
-      strokeColor,
-      strokeWeight,
-      strokeOpacity,
+      ...rest,
     });
+
+    if (fitBounds) {
+      map.fitBounds(polylineRef.current.getBounds(), fitBoundsPadding);
+    }
 
     return () => {
       if (polylineRef.current) {
@@ -45,7 +42,7 @@ const PolylineBase: ForwardRefRenderFunction<PolylineRef, PolylineProps> = (
         polylineRef.current = null;
       }
     };
-  }, [map, path, strokeColor, strokeWeight, strokeOpacity]);
+  }, [map, path, fitBounds, fitBoundsPadding, rest]);
 
   return <></>;
 };
