@@ -87,3 +87,13 @@ export interface RectangleProps
 export interface RectangleRef {
   getRectangle: () => { rectangle: Nullable<routo.maps.Rectangle>; id: string };
 }
+
+export interface MarkerClustererProps
+  extends Omit<routo.maps.MarkerClusterOptions, "map"> {}
+
+export interface MarkerClustererRef {
+  getMarkerClusterer: () => {
+    markerClusterer: Nullable<routo.maps.MarkerClusterer>;
+    id: string;
+  };
+}
