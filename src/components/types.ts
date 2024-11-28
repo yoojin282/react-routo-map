@@ -1,5 +1,11 @@
 import { ElementType, ReactElement } from "react";
-import { ComponentBase, LatLng, Nullable, PixelOffset } from "../types";
+import {
+  ComponentBase,
+  LatLng,
+  Nullable,
+  Padding,
+  PixelOffset,
+} from "../types";
 
 export interface MapProps extends routo.maps.MapOptions, ComponentBase {
   as?: ElementType;
@@ -46,4 +52,15 @@ export interface PolylineProps {
 
 export interface PolylineRef {
   getPolyline: () => { polyline: Nullable<routo.maps.Polyline>; id: string };
+}
+
+export interface PolygonProps
+  extends Omit<routo.maps.PolygonOptions, "map" | "clickable"> {
+  paths: LatLng[][];
+  fitBounds?: boolean | undefined;
+  fitBoundsPadding?: Padding | undefined;
+}
+
+export interface PolygonRef {
+  getPolygon: () => { polygon: Nullable<routo.maps.Polygon>; id: string };
 }
