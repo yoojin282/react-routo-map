@@ -60,7 +60,7 @@
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vitest": "^2.1.5",
-    "@yoojin282/routo-map-types": "0.1.3"
+    "@yoojin282/routo-map-types": "0.1.4"
   },
   "peerDependencies": {
     "react": ">=18",
