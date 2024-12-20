@@ -36,7 +36,7 @@ export const useRoutoMapInit: UseRoutoMapInit = ({
       existingScript.remove();
     }
     for (let i = 0; i < (submodules?.length ?? 0); i++) {
-      let subScript = submodules![i];
+      const subScript = submodules![i];
       if (!subScript) {
         continue;
       }
@@ -111,7 +111,7 @@ const createRoutoMapScriptByAppKey = ({
   appKey,
 }: Pick<InitParams, "appKey">) => {
   const script = document.createElement("script");
-  let paramsString = `key=${appKey}`;
+  const paramsString = `key=${appKey}`;
 
   script.id = SCRIPT_ID;
   script.type = "text/javascript";
