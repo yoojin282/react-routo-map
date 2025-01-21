@@ -48,6 +48,8 @@ const Component = () => {
 
 ```bash
 npm install @yoojin282/react-routo-map
+or
+pnpm add @yoojin282/react-routo-map
 ```
 
 ## Simple Usage
